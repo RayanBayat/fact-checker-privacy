@@ -1,6 +1,6 @@
 # Privacy Policy for YouTube Fact Checker
 
-**Last updated:** November 3, 2026
+**Last updated:** November 5, 2026
 
 YouTube Fact Checker is a client-side browser extension that fact-checks factual claims in YouTube videos while you watch.
 
@@ -9,19 +9,19 @@ YouTube Fact Checker is a client-side browser extension that fact-checks factual
 ## 1. No developer server and no telemetry
 
 - **No developer servers:** Nothing is sent to the extension's developer: there is no developer server, and no analytics or tracking. The extension has no backend, proxy or tracking server, and we do not collect, view, store, sell or log your browsing history, IP address, device information or video viewing habits.
-- **Client-side execution:** All processing logic runs inside your browser: in the extension's background service worker, its settings page and its content scripts. The extension loads no scripts, fonts or images from other websites.
+- **Client-side execution:** All processing logic runs inside your browser: in the extension's background script (a service worker in Chrome, a background page in Firefox), its settings page and its content scripts. The extension loads no scripts, fonts or images from other websites.
 
 ---
 
 ## 2. What leaves your browser, and where it goes
 
-Data leaves your browser **only** to the one AI service the extension uses, which you sign in to in the settings page, and to YouTube itself to read a video's captions (section 2.4). That service is OpenAI, through your ChatGPT plan (the "ChatGPT plan" in the settings page). Every request to it is made by the extension's background service worker. Chrome asks for your permission for OpenAI's addresses when you choose **Continue with ChatGPT**; at install, the extension asks only for YouTube.
+Data leaves your browser **only** to the one AI service the extension uses, which you sign in to in the settings page, and to YouTube itself to read a video's captions (section 2.4). That service is OpenAI, through your ChatGPT plan (the "ChatGPT plan" in the settings page). Every request to it is made by the extension's background script. Your browser asks for your permission for OpenAI's addresses when you choose **Continue with ChatGPT**; at install, the extension asks only for YouTube.
 
 | Service | Where requests go |
 |---|---|
 | OpenAI, with your ChatGPT plan | `api.openai.com`, and `auth.openai.com` for the sign-in (section 2.5) |
 
-Earlier versions could also use other AI services with your own API key. This version does not offer them: it does not ask Chrome for their addresses, and it sends them nothing, even if an earlier version left one of their keys in this browser.
+Earlier versions could also use other AI services with your own API key. This version does not offer them: it does not ask the browser for their addresses, and it sends them nothing, even if an earlier version left one of their keys in this browser.
 
 ### 2.1 While you watch a video
 
@@ -42,7 +42,7 @@ Opening the settings page asks the service you signed in to for the list of mode
 
 - Nothing is asked while you are not signed in, or while the service is turned off.
 - A list counts as fresh for 24 hours. The page asks again after that, when you press Refresh, and when you preview a preset (which refreshes a list older than an hour). The new list replaces the old one; if the service cannot be reached, the old list stays and is shown with its age.
-- The service is asked only if Chrome has allowed its addresses.
+- The service is asked only if the browser has allowed its addresses.
 
 ### 2.3 When you press a test button
 
@@ -68,9 +68,9 @@ The cost summary on the Limits section is worked out on your device, from the pr
 
 Your sign-in, settings, model lists, checked results and usage counts are stored only in this browser and are never synced.
 
-- **Sign-in:** the ChatGPT refresh token, the identifier OpenAI gave the app, your ChatGPT account's identifier, and the email address or name on that account (shown in settings) are kept in Chrome's local extension storage (`chrome.storage.local`). Chrome does not encrypt this storage; anyone with access to your browser profile could read it. The ChatGPT access token (valid for about an hour) is kept only in memory (`chrome.storage.session`): it is gone when the browser restarts and when the extension is reloaded, updated or turned off. A key saved by an earlier version stays in local storage until you remove it (section 5); this version never uses it.
-- **Never synced:** Nothing is stored in `chrome.storage.sync`, so nothing is synced across devices or Google accounts.
-- **Restricted use:** Your sign-in stays in this browser and is sent only to the service it belongs to. It is stored on this device without encryption, so anyone with access to this browser profile could read it. The sign-in is read only by the extension's background service worker; the extension never sends a sign-in token to the YouTube page or to its content scripts.
+- **Sign-in:** the ChatGPT refresh token, the identifier OpenAI gave the app, your ChatGPT account's identifier, and the email address or name on that account (shown in settings) are kept in the browser's local extension storage (`storage.local`). Neither Chrome nor Firefox encrypts this storage; anyone with access to your browser profile could read it. The ChatGPT access token (valid for about an hour) is kept only in memory (`storage.session`): it is gone when the browser restarts and when the extension is reloaded, updated or turned off. A key saved by an earlier version stays in local storage until you remove it (section 5); this version never uses it.
+- **Never synced:** Nothing is stored in `storage.sync`, so nothing is synced across devices or accounts.
+- **Restricted use:** Your sign-in stays in this browser and is sent only to the service it belongs to. It is stored on this device without encryption, so anyone with access to this browser profile could read it. The sign-in is read only by the extension's background script; the extension never sends a sign-in token to the YouTube page or to its content scripts.
 - **Settings:** whether the service is on, its model, the model that finds claims, your limits, display choices and the main on/off switch.
 - **Model lists:** the list of model names on your plan that the service returned (no video text). The extension deletes it when you disconnect; no other control clears it.
 - **Usage counts:** for each model you use, how many requests it made, how many failed and how long the newest successful ones took (up to 20), and how many claims were checked in this browser session (session storage, cleared when the browser restarts or the extension is reloaded, updated or turned off). They stay on your device and are used only to show timings in the settings page (the Overview, the Models section and the model picker) and for the Fastest preset. No button clears the request counts and timings; Reset counter sets the session's claim count back to zero (section 5); removing the extension deletes all of them.
@@ -78,8 +78,8 @@ Your sign-in, settings, model lists, checked results and usage counts are stored
 
 ### Stored results
 
-- To avoid redundant requests, the extension stores which sentences are claims and the verdicts for each video locally in `chrome.storage.local`.
-- Stored results expire after 30 days without being used and are capped at about 5 MB using a least-recently-used (LRU) policy. The extension removes expired results, and the least recently used ones beyond the cap, each time its background service worker starts. Clear stored results deletes them all (section 5).
+- To avoid redundant requests, the extension stores which sentences are claims and the verdicts for each video locally in `storage.local`.
+- Stored results expire after 30 days without being used and are capped at about 5 MB using a least-recently-used (LRU) policy. The extension removes expired results, and the least recently used ones beyond the cap, each time its background script starts. Clear stored results deletes them all (section 5).
 
 ---
 
@@ -93,7 +93,7 @@ A settings file holds no keys and no sign-in, and it stays on your computer.
 
 ## 5. How to delete your data
 
-The Data and privacy section of the settings page clears stored results, removes the sign-in and resets settings; request counts, timings, model lists and a few small flags have no button of their own. Removing the extension from Chrome deletes everything it stored.
+The Data and privacy section of the settings page clears stored results, removes the sign-in and resets settings; request counts, timings, model lists and a few small flags have no button of their own. Removing the extension from the browser deletes everything it stored.
 
 What each control deletes, and what it leaves:
 
@@ -103,7 +103,7 @@ What each control deletes, and what it leaves:
 - **Reset settings:** In Data and privacy, open Advanced and press **Reset settings**. This puts whether the service is on, its model, the model that finds claims, your limits, your display choices, the main on/off switch, whether the panel is collapsed and this page's theme back to what a first run uses. The sign-in, model lists, stored results and usage counts are kept.
 - **Reset the session count:** In Limits, open Advanced and press **Reset counter**. This sets the count of claims checked in this browser session back to zero. Nothing else changes.
 - **What no button deletes:** the request counts and timings kept for each model, the model list (except as described above), whether a Try a claim has worked, and which parts of the settings page are open. Only removing the extension deletes them.
-- **Delete everything:** Right-click the extension's icon and choose **Remove from Chrome**. This erases everything the extension stored in this browser: your sign-in, any old key, settings, model lists, stored results and usage counts. (Clearing browsing data in Chrome's settings does not remove extension storage.)
+- **Delete everything:** In Chrome, right-click the extension's icon and choose **Remove from Chrome**. In Firefox, right-click it and choose **Remove Extension**, or press **Remove** on its page in the Add-ons Manager. This erases everything the extension stored in this browser: your sign-in, any old key, settings, model lists, stored results and usage counts. (Clearing browsing data in Chrome's settings does not remove extension storage.)
 
 **What deleting here does not do:**
 
